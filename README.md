@@ -16,4 +16,4 @@ Use Best Practices
 
 Screenshot:
 
-![image](https://user-images.githubusercontent.com/44408528/47764002-91431600-dc99-11e8-9477-beb6358d9be0.png)
+![image](https://user-images.githubusercontent.com/44408528/47789331-ad22d800-dcea-11e8-8b31-96e06eadedf1.png)
