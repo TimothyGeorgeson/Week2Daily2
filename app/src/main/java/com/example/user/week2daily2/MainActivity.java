@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText etToFile;
     private TextView tvFromFile;
     private EditText etDesc;
-    private EditText etPicture;
     private EditText etRecordID;
     private TextView tvDisplay;
     private ImageView ivImage;
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         etToFile = findViewById(R.id.etToFile);
         tvFromFile = findViewById(R.id.tvFromFile);
         etDesc = findViewById(R.id.etDesc);
-        etPicture = findViewById(R.id.etPicture);
         etRecordID = findViewById(R.id.etRecordID);
         tvDisplay = findViewById(R.id.tvDisplay);
         ivImage = findViewById(R.id.ivImage);
@@ -95,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void insertRecord(View view) {
         String desc = etDesc.getText().toString();
-        String picture = etPicture.getText().toString();
         Bitmap bm=((BitmapDrawable)ivImage.getDrawable()).getBitmap();
         byte[] imgBlob = getBytes(bm);
 
@@ -126,10 +123,15 @@ public class MainActivity extends AppCompatActivity {
                     image = cursor.getBlob(2);
                 }
             }
-            Bitmap imgResult = BitmapFactory.decodeByteArray(image, 0, image.length);
-            // Show result
             tvDisplay.setText(result);
-            ivImage.setImageBitmap(imgResult);
+
+            try {
+                Bitmap imgResult = BitmapFactory.decodeByteArray(image, 0, image.length);
+                ivImage.setImageBitmap(imgResult);
+            }
+            catch (Exception e){
+
+            }
         }
 
     }
