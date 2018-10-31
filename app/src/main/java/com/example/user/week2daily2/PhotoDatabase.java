@@ -45,7 +45,7 @@ public class PhotoDatabase extends SQLiteOpenHelper {
     {
         //get instance of the database
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("SELECT " + PhotoContract.FeedEntry.COL_PHOTO + " FROM " +
+        return db.rawQuery("SELECT * FROM " + //("SELECT " + PhotoContract.FeedEntry.COL_PHOTO + " FROM " +
                 PhotoContract.FeedEntry.TABLE_NAME + " WHERE " + PhotoContract.FeedEntry.COL_ID + "=" + rowId,null);
     }
 

@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void insertRecord(View view) {
-        String desc = etDesc.toString();
-        String picture = etPicture.toString();
+        String desc = etDesc.getText().toString();
+        String picture = etPicture.getText().toString();
 
         PhotoDatabase photoDatabase = new PhotoDatabase(this);
 
@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
                 while (cursor.moveToNext()) {
                     result += "Id :"+ cursor.getString(0)+" ";
-                    //result += "Desc :"+ cursor.getString(1)+" ";
-                    //result += "Photo :"+ cursor.getString(2)+" ";
+                    result += "Desc :"+ cursor.getString(1)+" ";
+                    result += "Photo :"+ cursor.getString(2)+" ";
                 }
             }
             // Show result
