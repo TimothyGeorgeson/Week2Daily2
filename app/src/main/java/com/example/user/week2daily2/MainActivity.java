@@ -1,14 +1,21 @@
 package com.example.user.week2daily2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
@@ -16,12 +23,15 @@ import java.io.OutputStreamWriter;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+
     private EditText etToFile;
     private TextView tvFromFile;
     private EditText etDesc;
     private EditText etPicture;
     private EditText etRecordID;
     private TextView tvDisplay;
+    private ImageView ivImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         etPicture = findViewById(R.id.etPicture);
         etRecordID = findViewById(R.id.etRecordID);
         tvDisplay = findViewById(R.id.tvDisplay);
+        ivImage = findViewById(R.id.ivImage);
     }
 
     public void writeToFile(View view) {
@@ -85,10 +96,12 @@ public class MainActivity extends AppCompatActivity {
     public void insertRecord(View view) {
         String desc = etDesc.getText().toString();
         String picture = etPicture.getText().toString();
+        Bitmap bm=((BitmapDrawable)ivImage.getDrawable()).getBitmap();
+        byte[] imgBlob = getBytes(bm);
 
         PhotoDatabase photoDatabase = new PhotoDatabase(this);
 
-        long rowId = photoDatabase.savePhoto(desc, picture);
+        long rowId = photoDatabase.savePhoto(desc, imgBlob);
         Toast.makeText(this, "Record Added with ID: " + String.valueOf(rowId), Toast.LENGTH_SHORT).show();
 
     }
@@ -102,18 +115,44 @@ public class MainActivity extends AppCompatActivity {
             PhotoDatabase photoDatabase = new PhotoDatabase(this);
             long recordID = Long.parseLong(etRecordID.getText().toString());
             String result = "";
+            byte[] image = null;
             Cursor cursor = photoDatabase.getPhoto(recordID);
             if(cursor.getCount() != 0) {
 
                 while (cursor.moveToNext()) {
                     result += "Id :"+ cursor.getString(0)+" ";
                     result += "Desc :"+ cursor.getString(1)+" ";
-                    result += "Photo :"+ cursor.getString(2)+" ";
+                    //result += "Photo :"+ cursor.getString(2)+" ";
+                    image = cursor.getBlob(2);
                 }
             }
+            Bitmap imgResult = BitmapFactory.decodeByteArray(image, 0, image.length);
             // Show result
             tvDisplay.setText(result);
+            ivImage.setImageBitmap(imgResult);
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ivImage.setImageBitmap(imageBitmap);
+        }
+    }
+
+    public void takePicture(View view) {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    public static byte[] getBytes(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        return stream.toByteArray();
     }
 }

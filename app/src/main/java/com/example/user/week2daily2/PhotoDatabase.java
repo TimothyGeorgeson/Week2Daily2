@@ -26,7 +26,7 @@ public class PhotoDatabase extends SQLiteOpenHelper {
         //migration scripts for saving database
     }
 
-    public long savePhoto(String desc, String photo) {
+    public long savePhoto(String desc, byte[] photo) {
 
         //get instance of the database
         SQLiteDatabase database = getWritableDatabase();
@@ -50,7 +50,7 @@ public class PhotoDatabase extends SQLiteOpenHelper {
     }
 
 
-    public void updateRecord(long rowId, String desc, String photo) {
+    public void updateRecord(long rowId, String desc, byte[] photo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PhotoContract.FeedEntry.COL_ID, rowId);

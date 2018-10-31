@@ -11,7 +11,7 @@ public class PhotoContract {
             FeedEntry.TABLE_NAME + "(" +
             FeedEntry.COL_ID + " INTEGER PRIMARY KEY, " +
             FeedEntry.COL_DESC + " Text," +
-            FeedEntry.COL_PHOTO + " Text)";
+            FeedEntry.COL_PHOTO + " BLOB)";
 
 
     public static final String GET_ALL = "SELECT * FROM " + FeedEntry.TABLE_NAME;
