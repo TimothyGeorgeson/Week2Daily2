@@ -33,7 +33,6 @@ public class PhotoDatabase extends SQLiteOpenHelper {
 
         //create content values to save the data as a row
         ContentValues contentValues = new ContentValues();
-        //contentValues.put(PhotoContract.FeedEntry.COL_ID, ID);
         contentValues.put(PhotoContract.FeedEntry.COL_DESC, desc);
         contentValues.put(PhotoContract.FeedEntry.COL_PHOTO, photo);
 
@@ -44,11 +43,23 @@ public class PhotoDatabase extends SQLiteOpenHelper {
 
     public Cursor getPhoto(long rowId)
     {
+        //get instance of the database
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT " + PhotoContract.FeedEntry.COL_PHOTO + " FROM " +
                 PhotoContract.FeedEntry.TABLE_NAME + " WHERE " + PhotoContract.FeedEntry.COL_ID + "=" + rowId,null);
     }
 
+
+    public void updateRecord(long rowId, String desc, String photo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PhotoContract.FeedEntry.COL_ID, rowId);
+        contentValues.put(PhotoContract.FeedEntry.COL_DESC, desc);
+        contentValues.put(PhotoContract.FeedEntry.COL_PHOTO, photo);
+
+        db.update(PhotoContract.FeedEntry.TABLE_NAME, contentValues, "ID = ?",new String[] { Long.toString(rowId) });
+
+    }
 
     public boolean deletePhoto(long rowId)
     {
@@ -57,24 +68,5 @@ public class PhotoDatabase extends SQLiteOpenHelper {
         return database.delete(PhotoContract.FeedEntry.TABLE_NAME, PhotoContract.FeedEntry.COL_ID + "=" + rowId, null) > 0;
     }
 
-//    public List<Person> getPeople() {
-//        SQLiteDatabase database = getWritableDatabase();
-//
-//        List<Person> personList = new ArrayList<>();
-//
-//        Cursor cursor = database.rawQuery(PersonContract.GET_ALL, null);
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                Person person = new Person(cursor.getString(cursor.getColumnIndex(PersonContract.FeedEntry.COL_NAME)),
-//                        cursor.getString(cursor.getColumnIndex(PersonContract.FeedEntry.COL_AGE)),
-//                        cursor.getString(cursor.getColumnIndex(PersonContract.FeedEntry.COL_GENDER)));
-//
-//                personList.add(person);
-//            } while (cursor.moveToNext());
-//        }
-//
-//        return personList;
-//    }
 }
 

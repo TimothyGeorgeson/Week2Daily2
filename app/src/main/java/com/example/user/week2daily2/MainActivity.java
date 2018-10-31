@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         PhotoDatabase photoDatabase = new PhotoDatabase(this);
 
         long rowId = photoDatabase.savePhoto(desc, picture);
-        Toast.makeText(this, String.valueOf(rowId), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Record Added with ID: " + String.valueOf(rowId), Toast.LENGTH_SHORT).show();
 
     }
 

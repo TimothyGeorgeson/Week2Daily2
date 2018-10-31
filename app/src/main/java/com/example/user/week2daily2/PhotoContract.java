@@ -6,9 +6,7 @@ public class PhotoContract {
     public static final String NAME = "Photo.db";
     public static final int VERSION = 1;
 
-//    CREATE TABLE table_name(
-//            column_1 NOT NULL INTEGER PRIMARY KEY,
-
+    //Creates table with primary key
     public static final String CREATE_TABLE = "CREATE TABLE " +
             FeedEntry.TABLE_NAME + "(" +
             FeedEntry.COL_ID + " INTEGER PRIMARY KEY, " +
